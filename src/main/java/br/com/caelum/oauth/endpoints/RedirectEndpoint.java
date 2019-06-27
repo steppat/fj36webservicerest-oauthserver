@@ -1,16 +1,15 @@
 package br.com.caelum.oauth.endpoints;
 
-import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriInfo;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Para um exemplo mais próximo de uma situação real, 
@@ -18,17 +17,18 @@ import org.codehaus.jettison.json.JSONObject;
  * este endpoint deve estar localizado no client
  *
  */
-@Path("/redirect")
+@RestController
+@RequestMapping("/redirect")
 public class RedirectEndpoint {
 
-    @Context
-    HttpHeaders httpHeaders;
-    
-    @Context
-    UriInfo uriInfo;
+//    @Context
+//    HttpHeaders httpHeaders;
+//    
+//    @Context
+//    UriInfo uriInfo;
 
-    @GET
-    public String redirect() {
+    @GetMapping
+    public String redirect(@RequestHeader HttpHeaders httpHeaders, @RequestParam Map<String,String> allRequestParams) {
         
     	JSONObject object = new JSONObject();
         JSONObject headers = new JSONObject(); 
@@ -36,15 +36,16 @@ public class RedirectEndpoint {
         
         String json = "error!";
         
+        
         try {
-            for (Map.Entry<String, List<String>> entry : httpHeaders.getRequestHeaders().entrySet()) {
-                headers.put(entry.getKey(), entry.getValue().get(0));
+            for (Map.Entry<String, String> entry : httpHeaders.toSingleValueMap().entrySet()) {
+                headers.put(entry.getKey(), entry.getValue());
             }
             
             object.put("headers", headers);
             
-            for (Map.Entry<String, List<String>> entry : uriInfo.getQueryParameters().entrySet()) {
-                queryParameteres.put(entry.getKey(), entry.getValue().get(0));
+            for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+                queryParameteres.put(entry.getKey(), entry.getValue());
             }
             object.put("queryParameters", queryParameteres);
             

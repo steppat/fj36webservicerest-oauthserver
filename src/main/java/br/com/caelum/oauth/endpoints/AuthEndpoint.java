@@ -3,14 +3,8 @@ package br.com.caelum.oauth.endpoints;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
@@ -22,18 +16,23 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
 import org.apache.oltu.oauth2.common.utils.OAuthUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.com.caelum.oauth.SecurityCodeStorage;
 
-@Path("/auth")
+@RestController
+@RequestMapping("/auth")
 public class AuthEndpoint {
 
-	@Inject
+	@Autowired
 	private SecurityCodeStorage securityCodeStorage;
 
-	@GET
-	public Response authorize(@Context HttpServletRequest request)
-			throws URISyntaxException, OAuthSystemException {
+	@GetMapping
+	public ResponseEntity<?> authorize(HttpServletRequest request) throws URISyntaxException, OAuthSystemException {
 		
 		try {
 			
@@ -67,19 +66,14 @@ public class AuthEndpoint {
 			
 			URI url = new URI(response.getLocationUri());
 			
-			return Response.status(response.getResponseStatus()).location(url).build();
+			return ResponseEntity.created(url).build();
 			
 		} catch (OAuthProblemException e) {
-			
-			final Response.ResponseBuilder responseBuilder = Response
-					.status(HttpServletResponse.SC_FOUND);
 			
 			String redirectUri = e.getRedirectUri();
 
 			if (OAuthUtils.isEmpty(redirectUri)) {
-				throw new WebApplicationException(responseBuilder.entity(
-						"OAuth callback url needs to be provided by client!!!")
-						.build());
+				return ResponseEntity.badRequest().body("OAuth callback url needs to be provided by client!!!");
 			}
 			
 			final OAuthResponse response = OAuthASResponse
@@ -88,8 +82,8 @@ public class AuthEndpoint {
 			
 			final URI location = new URI(response.getLocationUri());
 
-			return responseBuilder.location(location).build();
-			
+			return ResponseEntity.created(location).build();
+								
 		}
 	}
 }

@@ -1,1 +1,1 @@
-web: java -jar $JAVA_OPTS target/dependency/jetty-runner.jar --port $PORT target/oauthserver.war
+web: java -jar $JAVA_OPTS -Dserver.port=$PORT target/oauthserver-1.jar

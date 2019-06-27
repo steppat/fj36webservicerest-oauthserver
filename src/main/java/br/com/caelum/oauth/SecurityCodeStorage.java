@@ -3,13 +3,13 @@ package br.com.caelum.oauth;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import org.springframework.stereotype.Component;
 
 /**
  * Simula um storage para armazenamento de tokens 
  * e codigos de autenticacao 
  */
-@ApplicationScoped
+@Component
 public class SecurityCodeStorage {
 
 	private Set<String> tokens = new HashSet<String>();
