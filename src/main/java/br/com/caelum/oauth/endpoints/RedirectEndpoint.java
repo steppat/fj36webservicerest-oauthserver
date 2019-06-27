@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/redirect")
+@RequestMapping("/oauth/redirect")
 public class RedirectEndpoint {
 
 //    @Context

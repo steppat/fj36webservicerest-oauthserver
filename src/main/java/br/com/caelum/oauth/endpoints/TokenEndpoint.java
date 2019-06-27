@@ -27,7 +27,7 @@ import br.com.caelum.oauth.SecurityCodeStorage;
 import br.com.caelum.oauth.ServerParams;
 
 @RestController
-@RequestMapping("/token")
+@RequestMapping("/oauth/token")
 public class TokenEndpoint {
 
 	public static final String INVALID_CLIENT_DESCRIPTION = "Client authentication failed "

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.caelum.oauth.SecurityCodeStorage;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/oauth/auth")
 public class AuthEndpoint {
 
 	@Autowired
