@@ -11,9 +11,15 @@ import org.junit.Test;
 
 public class TestTockenEndpoint {
 
-	public static void main(String[] args) throws OAuthSystemException, OAuthProblemException {
+	public static void main(String[] args) throws Exception {
+		new TestTockenEndpoint().testGeraTokenComGrantTypePassworkNoHeroku();
+	}
+	
+//	@Test
+	public void testGeraTokenComGrantTypePassworkNoHeroku() throws OAuthSystemException, OAuthProblemException {
 
-		String tokenEndpoint = "http://localhost:8080/oauth/token";
+		//nao funciona com localhost
+		String tokenEndpoint = "http://fj36webservicerest-oauthserver.herokuapp.com/oauth/token";
 		
 		OAuthClientRequest request = OAuthClientRequest.tokenLocation(tokenEndpoint).setGrantType(GrantType.PASSWORD)
 				.setClientId("oauth2_client_id").setClientSecret("oauth2_client_secret").setUsername("fake_user")
