@@ -19,19 +19,17 @@ import org.apache.oltu.oauth2.common.utils.OAuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.caelum.oauth.SecurityCodeStorage;
 
 @RestController
-@RequestMapping("/oauth/auth")
 public class AuthEndpoint {
 
 	@Autowired
 	private SecurityCodeStorage securityCodeStorage;
 
-	@GetMapping
+	@GetMapping("/oauth/auth")
 	public ResponseEntity<?> authorize(HttpServletRequest request) throws URISyntaxException, OAuthSystemException {
 		
 		try {

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/oauth/redirect")
 public class RedirectEndpoint {
 
 //    @Context
@@ -27,7 +26,7 @@ public class RedirectEndpoint {
 //    @Context
 //    UriInfo uriInfo;
 
-    @GetMapping
+    @GetMapping("/oauth/redirect")
     public String redirect(@RequestHeader HttpHeaders httpHeaders, @RequestParam Map<String,String> allRequestParams) {
         
     	JSONObject object = new JSONObject();

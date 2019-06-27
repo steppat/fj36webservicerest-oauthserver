@@ -20,14 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.caelum.oauth.SecurityCodeStorage;
 import br.com.caelum.oauth.ServerParams;
 
 @RestController
-@RequestMapping("/oauth/token")
 public class TokenEndpoint {
 
 	public static final String INVALID_CLIENT_DESCRIPTION = "Client authentication failed "
@@ -38,9 +36,10 @@ public class TokenEndpoint {
 	@Autowired
 	private SecurityCodeStorage securityCodeStorage;
 
-	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/oauth/token",consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> authorize(HttpServletRequest request)
 			throws OAuthSystemException {
+		System.out.println("Chegou");
 		try {
 			OAuthTokenRequest oauthRequest = new OAuthTokenRequest(request);
 			OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(
@@ -92,7 +91,7 @@ public class TokenEndpoint {
 		}
 	}
 
-	@GetMapping("/{token}")
+	@GetMapping("/oauth/{token}")
 	public ResponseEntity<?> exists(@PathVariable("token") String token) {
 		if (securityCodeStorage.isValidToken(token)) {
 			return ResponseEntity.ok().build();

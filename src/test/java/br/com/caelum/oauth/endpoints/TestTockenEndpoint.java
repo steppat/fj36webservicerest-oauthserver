@@ -11,10 +11,9 @@ import org.junit.Test;
 
 public class TestTockenEndpoint {
 
-//	@Test
-	public void testGeraTokenFormHeroku() throws OAuthSystemException, OAuthProblemException {
+	public static void main(String[] args) throws OAuthSystemException, OAuthProblemException {
 
-		String tokenEndpoint = "http://fj36webservicerest-oauthserver.herokuapp.com/oauth/token";
+		String tokenEndpoint = "http://localhost:8080/oauth/token";
 		
 		OAuthClientRequest request = OAuthClientRequest.tokenLocation(tokenEndpoint).setGrantType(GrantType.PASSWORD)
 				.setClientId("oauth2_client_id").setClientSecret("oauth2_client_secret").setUsername("fake_user")
